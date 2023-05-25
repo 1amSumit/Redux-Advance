@@ -1,12 +1,12 @@
 import CartButton from "../Cart/CartButton";
 import classes from "./MainHeader.module.css";
-import { cartActions } from "../../store/redux";
+import { uiActions } from "../../store/ui-slice";
 import { useDispatch } from "react-redux";
 
 const MainHeader = (props) => {
   const dispatch = useDispatch();
   const cartClickHandler = () => {
-    dispatch(cartActions.showCartModel());
+    dispatch(uiActions.showCartModel());
   };
   return (
     <header className={classes.header}>

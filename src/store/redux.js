@@ -1,56 +1,9 @@
-import { createSlice, configureStore } from "@reduxjs/toolkit";
-
-const initalCartState = {
-  showCart: false,
-  items: [],
-  totalProduct: 0,
-};
-
-const addTocart = createSlice({
-  name: "addTocart",
-  initialState: initalCartState,
-  reducers: {
-    showCartModel(state) {
-      state.showCart = !state.showCart;
-    },
-    addProductToCart(state, action) {
-      const newItem = action.payload;
-      const existingItem = state.items.find((item) => item.id === newItem.id);
-
-      if (!existingItem) {
-        state.items.push({
-          id: newItem.id,
-          title: newItem.title,
-          price: newItem.price,
-          amount: 1,
-          totalPrice: newItem.price,
-        });
-        state.totalProduct++;
-      } else {
-        existingItem.amount++;
-        existingItem.totalPrice = existingItem.totalPrice + newItem.price;
-        state.totalProduct++;
-      }
-    },
-    remoeItemFromCart(state, action) {
-      const id = action.payload;
-      const existingItem = state.items.find((item) => item.id === id);
-      if (existingItem.amount === 1) {
-        state.items = state.items.filter((item) => item.id !== id);
-        state.totalProduct--;
-      } else {
-        existingItem.amount--;
-        existingItem.totalPrice = existingItem.totalPrice - existingItem.price;
-        state.totalProduct--;
-      }
-    },
-  },
-});
+import { configureStore } from "@reduxjs/toolkit";
+import uiSlice from "./ui-slice";
+import cartSlice from "./cart-slice";
 
 const store = configureStore({
-  reducer: addTocart.reducer,
+  reducer: { ui: uiSlice.reducer, cart: cartSlice.reducer },
 });
-
-export const cartActions = addTocart.actions;
 
 export default store;
