@@ -4,19 +4,40 @@ import { useDispatch, useSelector } from "react-redux";
 import { cartActions } from "../../store/redux";
 
 const ProductItem = (props) => {
+  const products = useSelector((state) => state.addProduct);
+  const itemInCart = useSelector((state) => state.itemAlreadyInCart);
+
   const dispatch = useDispatch();
   const { title, price, description } = props;
 
+  let index;
+
+  const checkItem = (title) => {
+    products.forEach((product, i) => {
+      console.log(product.title, title);
+      if (product.title === title) {
+        index = i;
+        dispatch(cartActions.setItemAlreadyinCart());
+      } else {
+        dispatch(cartActions.setItemNotinCart());
+      }
+    });
+  };
+
   const addToCarthandler = () => {
-    dispatch(cartActions.addToCart());
-    dispatch(
-      cartActions.addProductToCart({
-        title,
-        price,
-        description,
-        amount: 1,
-      })
-    );
+    checkItem(title);
+    if (!itemInCart) {
+      dispatch(
+        cartActions.addProductToCart({
+          title,
+          price,
+          description,
+          amount: 1,
+        })
+      );
+    } else {
+      dispatch(cartActions.increaseItem(index));
+    }
   };
 
   return (

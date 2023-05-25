@@ -5,6 +5,7 @@ const initalCartState = {
   hasItem: false,
   showCart: false,
   addProduct: [],
+  totalProduct: 0,
 };
 
 const addTocart = createSlice({
@@ -16,19 +17,21 @@ const addTocart = createSlice({
     },
     addProductToCart(state, action) {
       state.addProduct.push(action.payload);
+      state.totalProduct++;
     },
-    addToCart(state) {
-      state.product++;
-      state.hasItem = true;
-    },
-    increaseItem(state) {
-      state.addProduct.amount++;
+    increaseItem(state, action) {
+      state.addProduct[action.payload].amount++;
+      state.totalProduct++;
     },
     decreaseItem(state) {
       state.addProduct.amount--;
+      state.totalProduct++;
     },
     setItemAlreadyinCart(state) {
       state.itemAlreadyInCart = true;
+    },
+    setItemNotinCart(state) {
+      state.itemAlreadyInCart = false;
     },
   },
 });
